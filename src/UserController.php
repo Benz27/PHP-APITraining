@@ -49,15 +49,13 @@ class UserController
     {
 
         $data = (array) json_decode(file_get_contents("php://input"), true);
-        $errors = $this->getRegistrationValidationErrors(($data));
-
-        if (!empty($errors)) {
-            http_response_code(422);
-            echo json_encode(["errors" => $errors]);
-        }
-
+        // $errors = $this->getRegistrationValidationErrors(($data));
+        $errors = [];
+        // if (!empty($errors)) {
+        //     http_response_code(422);
+        //     echo json_encode(["errors" => $errors]);
+        // }
         $id = $this->gateway->register($data);
-
         http_response_code(201);
         echo json_encode([
             "message" => "User created",

@@ -67,7 +67,6 @@ VALUES (:productid, :name, :content, :rate)";
         $res->bindValue(":content", $new["content"] ?? $current["content"], PDO::PARAM_STR);
         $res->bindValue(":rate",  $new["rate"] ?? $current["rate"], PDO::PARAM_INT);
         $res->bindValue(":id", $current["id"], PDO::PARAM_INT);
-
         $res->execute();
 
         return $res->rowCount();

@@ -9,19 +9,20 @@ set_exception_handler("ErrorHandler::handleException");
 header("Content-type: application/json; charset=UTF-8");
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
-$database = new Database("localhost", "ecommercedb_bnz", "root", "");
+$database = new Database("DESKTOP-AQBL83L\SQLEXPRESS", "mydb", "VBBenz", "1234");
 $database->getConnection();
-$user_gateway = new UserGateway($database);
 
-$codec = new JWTCodec;
+// $user_gateway = new UserGateway($database);
 
-$auth = new Auth($user_gateway, $codec);
+// $codec = new JWTCodec;
 
-if($parts[2] !== 'user' && $_SERVER['REQUEST_METHOD'] === "POST"){
-    if(!$auth->authenticateAccessToken()){
-        exit;
-    }
-}
+// $auth = new Auth($user_gateway, $codec);
+
+// if($parts[2] !== 'user' && $_SERVER['REQUEST_METHOD'] === "POST"){
+//     if(!$auth->authenticateAccessToken()){
+//         exit;
+//     }
+// }
 
 switch ($parts[2]) {
     case 'products':
@@ -46,12 +47,7 @@ switch ($parts[2]) {
         
     case 'user':
         $action = $parts[3] ?? null;
-        if ($action === null) {
-            http_response_code(404);
-        }
-
         $gateway = new UserGateway($database);
-
         $controller = new UserController($gateway);
         $controller->processRequest($_SERVER["REQUEST_METHOD"], $action);
         break;

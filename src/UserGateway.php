@@ -10,17 +10,11 @@ class UserGateway
 
     public function register(array $data): string
     {
-        $sql = "INSERT INTO users (email, password, firstName, middleName, lastName, contactNo) 
-VALUES (:email, :password, :firstName, :middleName, :lastName, :contactNo)";
+        $sql = "INSERT INTO users (name, email) 
+VALUES (:name, :email)";
         $res = $this->conn->prepare($sql);
-        $password = md5($data["password"]);
-
+        $res->bindValue(":name", $data["name"], PDO::PARAM_STR);
         $res->bindValue(":email", $data["email"], PDO::PARAM_STR);
-        $res->bindValue(":password", $password, PDO::PARAM_STR);
-        $res->bindValue(":firstName", $data["firstName"], PDO::PARAM_STR);
-        $res->bindValue(":middleName", $data["middleName"], PDO::PARAM_STR);
-        $res->bindValue(":lastName", $data["lastName"], PDO::PARAM_STR);
-        $res->bindValue(":contactNo", $data["contactNo"], PDO::PARAM_STR);
 
         $res->execute();
         return $this->conn->lastInsertId();
